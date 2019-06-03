@@ -1,0 +1,8 @@
+{
+    "welcome":"Welcome to VisualPage-CustomPage!",
+    "step-2":{
+        "description":"What do you want to do?",
+        "see":"See a page",
+        "edit":"Edit a page"
+    }
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="style.css" rel="stylesheet">
+    <title>VisualPage - CustomPage - Home</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#step-2").hide();
+            $("#language-select").focus(function () {
+                prev_val = $(this).val();
+            }).change(function (event) {
+                event.preventDefault();
+                switch ($(this).val()) {
+                    case "english":
+                        step1("en");
+                        $("#home").fadeOut(100);
+                        $("#main").fadeIn(100);
+                        break;
+                    case "german":
+                        step1("de");
+                        $("#home").fadeOut(100);
+                        $("#main").fadeIn(100);
+                        break;
+                    default:
+                        alert("Diese Eingabe ist ungültig!");
+                        break;
+                }
+                $(this).val(prev_val);
+            });
+        });
+        function step1(language) {
+            $.getJSON(window.location.pathname.replace(/[\\\/][^\\\/]*$/, '') + '/language/' + language + ".json", function (data) {
+                $(".lang").each(function (index, element) {
+                    var currentData = data;
+                    $(this).text().split(" ").forEach(function(index){
+                        console.log(index);
+                        currentData = currentData[index];
+                    });
+                    $(this).text(currentData);
+                });
+            });
+            $("#progress-bar").width("25%");
+            $("#progress-bar").text("25%");
+            $("#step-2").fadeIn(400);
+            $("#home").fadeOut(400);
+        }
+    </script>
+</head>
+
+<body>
+    <div class="section bg-light-grey">
+        <svg class="float-left vertical-middle" style="width:15em;height:15em" align="left" viewBox="0 0 24 24">
+            <path fill="#000000"
+                d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z" />
+        </svg>
+        <div class="vertical-middle">
+            <h1 class="title">CustomPage</h1>
+            <h2 class="subtitle cl-secondary">Your self-paint editor!</h2>
+        </div>
+        <div class="progress bg-secondary">
+            <div class="progress-bar bg-primary" style="width: 0%" id="progress-bar">0%</div>
+        </div>
+    </div><br>
+    <div class="horizontal-center" id="home">
+        Welcome on the CustomPage site!<br>
+        Choose your language!<br><br>
+        <form action="#">
+            <label>Language/Sprache:
+                <select id="language-select" class="select">
+                    <option value="" selected disabled>Choose!/Wähle aus!</option>
+                    <option value="english">English</option>
+                    <option value="german">Deutsch</option>
+                </select>
+            </label>
+        </form>
+        <br>
+        A new language can you send us <a
+            href="https://github.com/CodeDoctorDE/visualpage/issues/new?assignees=&labels=language&template=language-request.md&title=">here</a>!<br>
+
+        Click <a href="https://github.com/CodeDoctorDE/visualpage/tree/master/frontend/custom-page/language">here</a> to
+        see
+        the language folder of the module!<br>
+    </div>
+    <div class="horizontal-center" id="step-2">
+        <p class="lang">step-2 description</p>
+        <button class="lang btn bg-primary">step-2 edit</button>
+        <button class="lang btn bg-primary">step-2 see</button>
+    </div>
+</body>
+
+</html>
