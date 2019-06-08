@@ -8,73 +8,85 @@
     <link href="style.css" rel="stylesheet">
     <title>VisualPage - CustomPage - Home</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/backend/localization.js"></script>
     <script>
+        function getUrlVars() {
+            var vars = {};
+            var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,
+                function (m, key, value) {
+                    vars[key] = value;
+                });
+            return vars;
+        }
         $(document).ready(function () {
-            $("#step-2").hide();
-            $("#language-select").focus(function () {
-                prev_val = $(this).val();
-            }).change(function (event) {
-                event.preventDefault();
-                switch ($(this).val()) {
-                    case "english":
-                        step1("en");
-                        $("#home").fadeOut(100);
-                        $("#main").fadeIn(100);
-                        break;
-                    case "german":
-                        step1("de");
-                        $("#home").fadeOut(100);
-                        $("#main").fadeIn(100);
-                        break;
-                    default:
-                        alert("Diese Eingabe ist ungültig!");
-                        break;
-                }
-                $(this).val(prev_val);
-            });
-        });
-        function step1(language) {
-            $.getJSON(window.location.pathname.replace(/[\\\/][^\\\/]*$/, '') + '/language/' + language + ".json", function (data) {
-                $(".lang").each(function (index, element) {
-                    var currentData = data;
-                    $(this).text().split(" ").forEach(function(index){
-                        console.log(index);
-                        currentData = currentData[index];
+            $("#home").hide();
+            $("#editor").hide();
+            $("#loading").show();
+            localize(getUrl(getUrlVars()["lang"]), function(){
+                $("#loading").fadeOut(400,function(){
+                    $("#home").fadeIn(400);
+                });
+                $("#language-select").focus(function () {
+                    prev_val = $(this).val();
+                }).change(function (event) {
+                    console.log($(this).val());
+                    localize(getUrl($(this).val()),function(){
+
+                    },function(){
+                        open();
                     });
-                    $(this).text(currentData);
+                    event.preventDefault();
+                    $(this).val(prev_val);
+                });
+            },function () {
+                $("#loading").fadeOut(400,function(){
+                    open();
                 });
             });
-            $("#progress-bar").width("25%");
-            $("#progress-bar").text("25%");
-            $("#step-2").fadeIn(400);
+        });
+        function getUrl(language) {
+            return window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')) + '/language/' + language + ".json";
+        }
+        function open() {
+            $("#editor").fadeIn(400);
             $("#home").fadeOut(400);
         }
     </script>
 </head>
 
 <body>
-    <div class="section bg-light-grey">
-        <svg class="float-left vertical-middle" style="width:15em;height:15em" align="left" viewBox="0 0 24 24">
-            <path fill="#000000"
-                d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z" />
-        </svg>
-        <div class="vertical-middle">
-            <h1 class="title">CustomPage</h1>
-            <h2 class="subtitle cl-secondary">Your self-paint editor!</h2>
+    <div class="horizontal-center" id="loading">
+        <div class="section bg-light-grey">
+            <svg class="float-left vertical-middle" style="width:15em;height:15em" align="left" viewBox="0 0 24 24">
+                <path fill="#000000"
+                    d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z" />
+            </svg>
+            <div class="vertical-middle">
+                <h1 class="title">CustomPage</h1>
+                <h2 class="subtitle cl-secondary">Your self-paint editor!</h2>
+            </div>
+            <p>Loading...</p>
         </div>
-        <div class="progress bg-secondary">
-            <div class="progress-bar bg-primary" style="width: 0%" id="progress-bar">0%</div>
-        </div>
-    </div><br>
+    </div>
     <div class="horizontal-center" id="home">
+        <div class="section bg-light-grey">
+            <svg class="float-left vertical-middle" style="width:15em;height:15em" align="left" viewBox="0 0 24 24">
+                <path fill="#000000"
+                    d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z" />
+            </svg>
+            <div class="vertical-middle">
+                <h1 class="title">CustomPage</h1>
+                <h2 class="subtitle cl-secondary">Your self-paint editor!</h2>
+            </div>
+        </div><br>
         Welcome on the CustomPage site!<br>
         Choose your language!<br><br>
         <form action="#">
             <label>Language/Sprache:
                 <select id="language-select" class="select">
-                    <option value="" selected disabled>Choose!/Wähle aus!</option>
-                    <option value="english">English</option>
-                    <option value="german">Deutsch</option>
+                    <option value="" selected disabled>Choose!</option>
+                    <option value="en">English</option>
+                    <option value="de">Deutsch</option>
                 </select>
             </label>
         </form>
@@ -86,10 +98,13 @@
         see
         the language folder of the module!<br>
     </div>
-    <div class="horizontal-center" id="step-2">
-        <p class="lang">step-2 description</p>
-        <button class="lang btn bg-primary">step-2 edit</button>
-        <button class="lang btn bg-primary">step-2 see</button>
+    <div class="horizontal-center" id="editor">
+        <form class="search-bar">
+                <input type="submit" class="lang" value="#lang editor/url-box/button" style="float: right" />
+                <div style="overflow: hidden; padding-right: .5em;">
+                   <input type="text" style="width: 100%;" class="lang" placeholder="#lang editor/url-box/input" />
+                </div>
+        </form>
     </div>
 </body>
 

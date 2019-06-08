@@ -59,10 +59,10 @@ body{
     padding: 0.5em 1em;
     border-radius: 0.5em;
     border-color: black;
-    border-spacing: 1em;
+    border-width: 0.1em;
 }
 .btn:hover{
-    background-color: rgba(58,175,220,1);
+    background-color: rgba(214,222,233,1);
     border-radius: 0em;
-    padding: 0.6em 1.1em;
+    cursor: pointer;
 }
