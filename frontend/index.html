@@ -35,17 +35,17 @@
             });
             console.log(getUrl(getUrlVars()["lang"]));
             localize(getUrl(getUrlVars()["lang"]),
-            function (){
-                console.log("error");
-                $("#loading").fadeOut(400, function () {
-                    $("#home").fadeIn(400);
+                function () {
+                    console.log("error");
+                    $("#loading").fadeOut(400, function () {
+                        $("#home").fadeIn(400);
+                    });
+                }, function () {
+                    console.log("success");
+                    $("#loading").fadeOut(400, function () {
+                        open();
+                    });
                 });
-            }, function () {
-                console.log("success");
-                $("#loading").fadeOut(400, function () {
-                    open();
-                });
-            });
         });
         function getUrl(language) {
             return document.URL.substr(0, document.URL.lastIndexOf('/')).toString() + '/language/' + language + ".json";
@@ -53,6 +53,19 @@
         function open() {
             $("#editor").fadeIn(400);
             $("#home").fadeOut(400);
+            $("#url-button").click(function (event) {
+                event.preventDefault();
+
+                $.ajax({
+                    url: $("#url-input").val(),
+                    type: 'GET',
+                    success: function (res) {
+                        var data = $.parseHTML(res);
+                        $("#website").html(res);
+                    }
+                });
+                return false;
+            });
         }
     </script>
 </head>
@@ -103,12 +116,19 @@
     </div>
     <div class="horizontal-center" id="editor">
         <form class="search-bar">
-            <input type="submit" class="lang" value="#lang editor/url-box/button" style="float: right" />
+            <input type="submit" class="lang" id="url-button" value="#lang editor/url-box/button"
+                style="float: right" />
             <div style="overflow: hidden; padding-right: .5em;">
-                <input type="text" style="width: 100%;" class="lang" placeholder="#lang editor/url-box/input" />
+                <input type="text" style="width: 100%;" id="url-input" class="lang"
+                    placeholder="#lang editor/url-box/input" />
             </div>
         </form>
+        <textarea>
+            
+        </textarea>
+        <iframe class="all-width" id="website"></iframe>
     </div>
+
 </body>
 
 </html>
