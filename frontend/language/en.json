@@ -1,7 +1,9 @@
 {
     "welcome":"Welcome to VisualPage-CustomPage!",
-    "step-2":{
-        "url":"Enter url...",
-        "confirm":"Okay!"
+    "editor":{
+        "url-box":{
+            "input":"Enter url",
+            "button":"Okay!"
+        }
     }
 }

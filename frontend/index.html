@@ -22,30 +22,33 @@
             $("#home").hide();
             $("#editor").hide();
             $("#loading").show();
-            localize(getUrl(getUrlVars()["lang"]), function(){
-                $("#loading").fadeOut(400,function(){
+            $("#language-select").focus(function () {
+                prev_val = $(this).val();
+            }).change(function (event) {
+                localize(getUrl($(this).val()), function () {
+
+                }, function () {
+                    open();
+                });
+                event.preventDefault();
+                $(this).val(prev_val);
+            });
+            console.log(getUrl(getUrlVars()["lang"]));
+            localize(getUrl(getUrlVars()["lang"]),
+            function (){
+                console.log("error");
+                $("#loading").fadeOut(400, function () {
                     $("#home").fadeIn(400);
                 });
-                $("#language-select").focus(function () {
-                    prev_val = $(this).val();
-                }).change(function (event) {
-                    console.log($(this).val());
-                    localize(getUrl($(this).val()),function(){
-
-                    },function(){
-                        open();
-                    });
-                    event.preventDefault();
-                    $(this).val(prev_val);
-                });
-            },function () {
-                $("#loading").fadeOut(400,function(){
+            }, function () {
+                console.log("success");
+                $("#loading").fadeOut(400, function () {
                     open();
                 });
             });
         });
         function getUrl(language) {
-            return window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')) + '/language/' + language + ".json";
+            return document.URL.substr(0, document.URL.lastIndexOf('/')).toString() + '/language/' + language + ".json";
         }
         function open() {
             $("#editor").fadeIn(400);
@@ -100,10 +103,10 @@
     </div>
     <div class="horizontal-center" id="editor">
         <form class="search-bar">
-                <input type="submit" class="lang" value="#lang editor/url-box/button" style="float: right" />
-                <div style="overflow: hidden; padding-right: .5em;">
-                   <input type="text" style="width: 100%;" class="lang" placeholder="#lang editor/url-box/input" />
-                </div>
+            <input type="submit" class="lang" value="#lang editor/url-box/button" style="float: right" />
+            <div style="overflow: hidden; padding-right: .5em;">
+                <input type="text" style="width: 100%;" class="lang" placeholder="#lang editor/url-box/input" />
+            </div>
         </form>
     </div>
 </body>
