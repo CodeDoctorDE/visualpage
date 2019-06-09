@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/api/localization.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Localization Example</title>
+    <script>
+        $(document).ready(function () {
+            localize("localization.json",function(){
+                alert("Couldn't load the language file!");
+            },function(){
+                console.log("Successfully loaded the language file!");
+            });
+        });
+    </script>
+</head>
+<body>
+    <p class="lang">#lang welcome</p>
+    <footer>
+        Localization by github.com/CodeDoctorDE
+    </footer>
+</body>
+</html>
